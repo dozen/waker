@@ -1,0 +1,33 @@
+<%= form_for(@auto_scheduler) do |f| %>
+  <% if @auto_scheduler.errors.any? %>
+    <div id="alert alert-danger">
+      <h2><%= pluralize(@auto_scheduler.errors.count, "error") %> prohibited this auto_scheduler from being saved:</h2>
+
+      <ul>
+      <% @auto_scheduler.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :name %><br>
+    <%= f.text_field :name, required: true, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :escalation_series_id %>
+    <%= f.collection_select(:escalation_series_id, EscalationSeries.all, :id, :name, {}, class: 'form-control') %>
+  </div>
+  <div class="form-group">
+    <%= f.label :settings %><br>
+    <%= f.text_area :settings, value: @auto_scheduler.settings.to_yaml, class: 'form-control', rows: 8 %>
+  </div>
+  <div class="check_box">
+    <%= f.label :enabled do %>
+      <%= f.check_box :enabled %>
+      Enabled
+    <% end %>
+  </div>
+  <%= f.submit(class: 'btn btn-default') %>
+<% end %>
