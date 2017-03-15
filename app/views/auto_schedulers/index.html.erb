@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Auto Schedulers</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Escalation Series</th>
+      <th>Settings</th>
+      <th>Enabled</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @auto_schedulers.each do |auto_scheduler| %>
+      <tr>
+        <td><%= auto_scheduler.name %></td>
+        <td><%= auto_scheduler.escalation_series.name %></td>
+        <td><%= auto_scheduler.settings %></td>
+        <td><%= auto_scheduler.enabled %></td>
+        <td><%= link_to 'Show', auto_scheduler %></td>
+        <td><%= link_to 'Edit', edit_auto_scheduler_path(auto_scheduler) %></td>
+        <td><%= link_to 'Destroy', auto_scheduler, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Auto scheduler', new_auto_scheduler_path %>

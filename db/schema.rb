@@ -11,7 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161207045554) do
+ActiveRecord::Schema.define(version: 20170315072209) do
+
+  create_table "auto_schedulers", force: :cascade do |t|
+    t.string   "name",                 limit: 255,                  null: false
+    t.text     "settings",             limit: 65535
+    t.boolean  "enabled",                            default: true
+    t.datetime "created_at",                                        null: false
+    t.datetime "updated_at",                                        null: false
+    t.integer  "escalation_series_id", limit: 4
+  end
+
+  add_index "auto_schedulers", ["escalation_series_id"], name: "index_auto_schedulers_on_escalation_series_id", using: :btree
 
   create_table "comments", force: :cascade do |t|
     t.integer  "incident_id", limit: 4,     null: false
@@ -121,6 +132,7 @@ ActiveRecord::Schema.define(version: 20161207045554) do
     t.text     "credentials", limit: 65535
   end
 
+  add_foreign_key "auto_schedulers", "escalation_series"
   add_foreign_key "escalations", "escalation_series"
   add_foreign_key "escalations", "users", column: "escalate_to_id"
   add_foreign_key "incident_events", "incidents"

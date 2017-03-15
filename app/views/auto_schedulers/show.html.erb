@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @auto_scheduler.name %>
+</p>
+
+<p>
+  <strong>Escalation Series:</strong>
+  <%= link_to @auto_scheduler.escalation_series.name, escalation_series_path(@auto_scheduler.escalation_series) %>
+</p>
+
+<p>
+  <strong>Settings:</strong>
+  <%= @auto_scheduler.settings %>
+</p>
+
+<p>
+  <strong>Enabled:</strong>
+  <%= @auto_scheduler.enabled %>
+</p>
+
+<%= link_to 'Edit', edit_auto_scheduler_path(@auto_scheduler) %> |
+<%= link_to 'Back', auto_schedulers_path %>

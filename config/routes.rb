@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :auto_schedulers
   get '/auth/:provider/callback', to: 'sessions#create'
 
   resources :incident_events, only: [] do
