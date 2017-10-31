@@ -98,7 +98,18 @@ class TopicsController < ApplicationController
       return
     end
 
-    subject = "[" + data['alert']['status'] + "] " + data['host']['name']
+    if data['alert'].nil? || data['alert']['status'] == "ok"
+      Rails.logger.info "Incident creation is skipped because alert status is '#{data.dig('alert', 'status')}'."
+      render json: {}, status: 200
+      return
+    end
+
+    resource_type, resource_info = data.find{ |k, _| %w(host service).include?(k) }
+    resource = resource_type ? "#{resource_type.capitalize}: #{resource_info['name']}" : ""
+
+    metric = data['alert']['metricLabel'] ? "#{data['alert']['metricLabel']} : #{data['alert']['metricValue']}" : ""
+
+    subject = "[#{data['alert']['status'].upcase}] #{data['orgName']} #{resource} #{data['alert']['monitorName']} #{metric}"
     description = JSON.pretty_generate(data)
 
     if @topic.in_maintenance?(subject, description)
