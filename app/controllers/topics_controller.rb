@@ -98,7 +98,21 @@ class TopicsController < ApplicationController
       return
     end
 
-    subject = "[" + data['alert']['status'] + "] " + data['host']['name']
+    unless %w(warning critical unknown).include?(data.dig('alert', 'status'))
+      Rails.logger.info "Incident creation is skipped because alert status is '#{data.dig('alert', 'status')}'."
+      render json: {}, status: 200
+      return
+    end
+
+    subject = "[#{data['alert']['status']}] #{data['orgName']}"
+
+    if data.has_key?('host')
+      subject += "Host: #{data['host']['name']}"
+    elsif data.has_key?('service')
+      subject += "Service: #{data['service']['name']}"
+    end
+
+    subject += data['alert']['metricLabel'] ? "#{data['alert']['metricLabel']} : #{data['metricValue']}" : ""
     description = JSON.pretty_generate(data)
 
     if @topic.in_maintenance?(subject, description)
