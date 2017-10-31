@@ -112,6 +112,8 @@ class TopicsController < ApplicationController
       subject += "Service: #{data['service']['name']}"
     end
 
+    subject += "#{data['alert']['monitorName']} "
+
     subject += data['alert']['metricLabel'] ? "#{data['alert']['metricLabel']} : #{data['metricValue']}" : ""
     description = JSON.pretty_generate(data)
 
